@@ -281,10 +281,19 @@ module.exports = {
       siteConfig.modules['apostrophe-workflow-modified-documents'] = {};
 
     } else {
+      
+      if (process.env.FORCE_LANGUAGE) {
+        const locales = [process.env.FORCE_LANGUAGE];
+        const defaultLocale = process.env.FORCE_LANGUAGE;
+      } else {
+        const locales = ['nl', 'en'];
+        const defaultLocale = 'nl';
+      }
+      
       siteConfig.modules['apostrophe-i18n'] = {
-        locales: ['nl', 'en'],
+        locales,
         directory: __dirname + '/locales',
-        defaultLocale: 'nl'
+        defaultLocale
       }
     }
 
