@@ -12,6 +12,7 @@
  */
 require('dotenv').config();
 //external libs
+const fs = require('fs');
 const express = require('express');
 const http2 = require('http2');
 const apostrophe = require('apostrophe');
@@ -40,38 +41,26 @@ let sitesResponse = [];
 const aposStartingUp = {};
 const REFRESH_SITES_INTERVAL = 60000 * 5;
 
-
 if (process.env.REQUEST_LOGGING === 'ON') {
     app.use(morgan('dev'));
 }
 
-
-//serve static path
-//https://expressjs.com/en/api.html#example.of.express.static
-var options = {
-    etag: true,
-    maxAge: 3600000, //in ms i.e 1 hr in this case
-    redirect: true,
-    setHeaders: function (res, path, stat) {
-        //any other header in response
-        res.set({
-            'x-timestamp': Date.now(),
-            'Cache-Control': 'public, max-age=3600'
-        });
-    }
-}
-
-const static = express.static('static', options);
-
 const aposServer = {};
 
-//todo move this to extension check fo performance
-app.use(express.static('public', {
-    maxAge: "1d"
-}));
-// serve static also on first level
+app.use(express.static('public'));
 
 app.set('trust proxy', true);
+
+// once on startup
+let openstadComponentsUrl = process.env.OPENSTAD_COMPONENTS_URL || '';
+let packageFile = fs.readFileSync(`${__dirname}/package.json`).toString() || '';
+let match = packageFile && packageFile.match(/"openstad-components":\s*"(?:[^"\d]*)((?:\d+\.)*\d+)"/);
+let version = match && match[1] || null;
+openstadComponentsUrl = openstadComponentsUrl.replace(/{version}/, version)
+let openstadReactAdminUrl = process.env.OPENSTAD_REACT_ADMIN_URL || '';
+match = packageFile && packageFile.match(/"openstad-react-admin":\s*"(?:[^"\d]*)((?:\d+\.)*\d+)"/);
+version = match && match[1] || null;
+openstadReactAdminUrl = openstadReactAdminUrl.replace(/{version}/, version)
 
 function fetchAllSites(req, res, startSites) {
     const apiUrl = process.env.INTERNAL_API_URL ? process.env.INTERNAL_API_URL : process.env.API;
@@ -127,19 +116,7 @@ function cleanUpSites() {
     }
 }
 
-/**
- * Check if Database exists and then
- * serve site with ApostropheCMS
- *
- * @param req
- * @param res
- * @param siteConfig, site REST object
- * @param forceRestart,
- * @returns {Promise<void>}
- */
 function serveSite(req, res, siteConfig, forceRestart) {
-
-
     const runner = Promise.promisify(run);
     const dbName = siteConfig.config && siteConfig.config.cms && siteConfig.config.cms.dbName ? siteConfig.config.cms.dbName : '';
     const domain = siteConfig.domain;
@@ -200,7 +177,7 @@ function serveSite(req, res, siteConfig, forceRestart) {
 function run(id, siteData, options, callback) {
     const site = {_id: id}
 
-    const config = _.merge(siteData, options);
+  const config = _.merge(siteData, options, {openstadComponentsUrl, openstadReactAdminUrl});
     let assetsIdentifier;
 
     // for dev sites grab the assetsIdentifier from the first site in order to share assets
@@ -293,30 +270,28 @@ module.exports.getMultiSiteApp = (options) => {
 
         const site = sites[domainAndPath] ? sites[domainAndPath] : false;
 
-        // in case the site with firstpath exists in the sites object then serve it, otherwise move to the next middleware that tries to load the root domain
         if (site) {
+            site.sitePrefix = req.params.sitePrefix;
+            req.sitePrefix = req.params.sitePrefix;
+            req.site = site;
 
-            // Static files for express.static works for root domain but not the subdir the path
-            // The files will get served if this is removed, but every file has to go through ApostropheCMS and this is a big performance hit.
-            // So this is an easy way to serve the files efficiently
-            // It, currently doesn't check if file exists for performance reasons, it's possible to add
-            // it, this will need
-            if (fileExtension.some(extension => req.url.includes(extension)) && !req.url.includes('/modules/apostrophe-oembed/')) {
-                //if (fileExtension.some(extension => req.url.includes(extension)) ) {
-                // replace the file path so it has correct version
-                // see if express static can work, it's a bit more expensive it seems since it does a file exist check
-                req.url = req.url.replace(req.params.sitePrefix, '');
-                return res.sendFile(path.resolve('public' + req.url));
-            } else {
-                site.sitePrefix = req.params.sitePrefix;
-                req.sitePrefix = req.params.sitePrefix;
-                req.site = site;
-                serveSite(req, res, site, req.forceRestart);
-            }
+            return express.static('public')(req, res, next);
+            // try to run static from subsite
         } else {
             next();
         }
     });
+
+
+    app.use('/:sitePrefix', function (req, res, next) {
+        if (req.site) {
+            //console.log('servig')
+            return serveSite(req, res, req.site, req.forceRestart);
+        }
+
+        next();
+    })
+
 
     /**
      * Check if the requested domain exists and if so serve the site
@@ -326,18 +301,18 @@ module.exports.getMultiSiteApp = (options) => {
         /**
          * Start the servers
          */
-        const site = sites[req.openstadDomain] ? sites[req.openstadDomain] : false;
+        const site = (sites[req.openstadDomain] ? sites[req.openstadDomain] : false);
 
 
         // if site exists serve it, otherwise give a 404
         if (site) {
-            console.log('Serve with apos', req.session);
             req.site = site;
             serveSite(req, res, site, req.forceRestart);
         } else {
             res.status(404).json({error: 'Site not found'});
         }
     });
+
 
     /**
      * Update the site config every few minutes
