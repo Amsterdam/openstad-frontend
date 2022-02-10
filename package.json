@@ -24,7 +24,7 @@
     "apostrophe-blog": "^2.1.2",
     "apostrophe-palette": "^2.0.30",
     "apostrophe-workflow": "2.39.5",
-    "dotenv": "^8.2.0",
+    "dotenv": "^8.6.0",
     "memory-cache": "^0.2.0",
     "morgan": "^1.10.0",
     "npm": "^8.0.0",
