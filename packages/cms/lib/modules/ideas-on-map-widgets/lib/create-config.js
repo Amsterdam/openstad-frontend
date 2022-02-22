@@ -123,12 +123,10 @@ module.exports = function createConfig({ widget, data, apos }) {
 		},
 
     map: {
-      variant: data.global.mapVariant || '',
-      mapTiles: {
-        url: data.global.mapTilesUrl,
-        subdomains: data.global.mapTilesSubdomains,
-        attribution: data.global.mapTilesAttribution,
-      },
+      variant: widget.mapVariant || '',
+      mapTilesUrl: widget.mapTilesUrl,
+      mapTilesSubdomains: widget.mapTilesSubdomains || '',
+      mapTilesAttribution: widget.mapTilesAttribution || '',
       zoom: 16,
       clustering: {
         isActive: widget.mapClustering,

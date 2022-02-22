@@ -151,6 +151,103 @@ module.exports = {
 		  ]
 	  },
     
+	  {
+		  name: 'mapVariant',
+		  type: 'select',
+		  label: 'Variant',
+      choices: [
+        {
+          label: 'NLMaps',
+          value: '',
+        },{
+          label: 'Amsterdam',
+          value: 'amaps',
+        },{
+          label: 'OpenStreetMaps',
+          value: 'openstreetmaps',
+        },{
+          label: 'Geavanceerd',
+          value: 'custom',
+          showFields: ['mapTilesUrl', 'mapTilesSubdomains', 'mapTilesAttribution'],
+        },
+      ],
+		  required: false
+	  },
+    { 
+      name: 'mapTilesUrl',
+      type: 'string',
+      label: 'Url van de tiles server',
+      help: 'Ziet er uit als: https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+      required: false,
+    },
+    { 
+      name: 'mapTilesSubdomains',
+      type: 'string',
+      label: 'Subdomains van de tiles server',
+      help: 'De mogelijke waarden voor \'s\' hierboven. Meestal \'1234\' of \'abcd\'.',
+      required: false,
+    },
+    { 
+      name: 'mapTilesAttribution',
+      type: 'string',
+      label: 'Attributie voor de tiles server',
+      help: 'De copyright tekst in de rechter onderhoek is voor sommige tileservers verplicht',
+      required: false,
+    },
+
+	  {
+		  name: 'mapAutoZoomAndCenter',
+		  type: 'select',
+		  label: 'Zoom en center',
+      choices: [
+        {
+          label: 'Niet',
+          value: false,
+        },{
+          label: 'Op markers',
+          value: 'markers',
+        },{
+          label: 'Op area',
+          value: 'area',
+        },
+      ],
+      def: false,
+		  required: false
+	  },
+
+    {
+      name: 'mapLocationIcon',
+      type: 'string',
+      label: 'Default Location icon',
+      help: 'JSON object: { "html": "<svg>...</svg>", "className": "osc-ideas-on-map-icon", "width": 39, "height": 50, "iconAnchor": [20,50] }',
+	  },
+    
+    
+	  {
+		  name: 'mapClustering',
+		  type: 'select',
+		  label: 'Clustering actief',
+		  choices: [
+			  {
+				  label: 'Ja',
+				  value: true,
+				  showFields: [
+					  'mapMaxClusterRadius'
+				  ]
+			  },{
+				  label: 'Nee',
+				  value: false,
+			  },
+		  ],
+		  required: false
+	  },
+
+    {
+      name: 'mapMaxClusterRadius',
+      type: 'integer',
+      label: 'Gevoeligheid van clusering',
+		  def: 40
+	  },
 
 	  { 
 		  name: 'noSelectionHTML',

@@ -872,5 +872,13 @@
 	"Form fields": "Form fields",
 	"Enter the location manually": "Enter the location manually",
 	"Login text": "Login text",
-	"Enable auto center (this option will automatically calculate the center of the map based on the markers and polygon)": "Enable auto center (this option will automatically calculate the center of the map based on the markers and polygon)"
+	"Enable auto center (this option will automatically calculate the center of the map based on the markers and polygon)": "Enable auto center (this option will automatically calculate the center of the map based on the markers and polygon)",
+	"OpenStreetMaps": "OpenStreetMaps",
+	"Attributie voor de tiles server": "Attributie voor de tiles server",
+	"De copyright tekst in de rechter onderhoek is voor sommige tileservers verplicht": "De copyright tekst in de rechter onderhoek is voor sommige tileservers verplicht",
+	"Zoom en center": "Zoom en center",
+	"Niet": "Niet",
+	"Op markers": "Op markers",
+	"Op area": "Op area",
+	"Clustering actief": "Clustering actief"
 }
