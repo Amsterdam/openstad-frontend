@@ -68,7 +68,7 @@ exports.dbExists = (dbName) => {
           
           const found = dbs.databases.find(dbObject => dbName === dbObject.name);
           console.log(`==> found: ${JSON.stringify(found)}`)
-          // dbs.close();
+          client.close();
           resolve(!!found)
         });
       }
