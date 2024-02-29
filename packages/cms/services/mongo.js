@@ -48,12 +48,18 @@ exports.copyMongoDb = (oldDbName, newDbName) => {
 }
 
 exports.dbExists = (dbName) => {
+  console.log(`==> Frontend gaat checken of de volgende database bestaat: ${dbName}`)
   return new Promise((resolve, reject) => {
+    console.log(`==> MongoClient.connect gaat aangeroepen worden. MongoClient: ${JSON.stringify(MongoClient)}`)
     MongoClient.connect(getConnectionString(), (err, db) => {
+      console.log(`==> Callback van de MongoClient.connect functie. db is: ${db}`)
       if (err) {
+        console.log(`==> Er is een error: ${err}`)
         reject(err);
       } else {
+        console.log(`==> Er is geen error. db.admin() gaat aangeroepen worden. db: ${db}`)
         var adminDb = db.admin();
+        console.log(`==> adminDb: ${adminDb}`)
         // List all the available databases
         adminDb.listDatabases(function(err, dbs) {
           console.log('---> err', err);
