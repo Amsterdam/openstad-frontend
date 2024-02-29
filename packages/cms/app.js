@@ -134,6 +134,9 @@ function serveSite(req, res, siteConfig, forceRestart) {
     const dbName = siteConfig.config && siteConfig.config.cms && siteConfig.config.cms.dbName ? siteConfig.config.cms.dbName : '';
     const domain = siteConfig.domain;
 
+    console.log(`==> serveSite functie wordt aangeroepen. siteConfig.config.cms.dbName: ${siteConfig.config.cms.dbName}`)
+    console.log(`==> dbName: ${dbName}`)
+
     // check if this site needs to redirect. We can then skip the rest.
     let redirectURI = siteConfig.config && siteConfig.config.cms && siteConfig.config.cms.redirectURI;
     if (redirectURI) {
