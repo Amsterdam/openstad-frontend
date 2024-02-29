@@ -62,7 +62,7 @@ exports.dbExists = (dbName) => {
           deprecationErrors: true
         }
       })
-      console.log(`==> mongoClient: ${JSON.stringify(mongoClient)}`)
+      console.log(`==> mongoClient: ${mongoClient}`)
       mongoClient.connect((err, client) => {
         console.log(`==> Callback van de MongoClient.connect functie. client is: ${client}`)
         if (err) {
@@ -79,7 +79,7 @@ exports.dbExists = (dbName) => {
             console.log('---> dbs.databases', dbs.databases);
             
             const found = dbs.databases.find(dbObject => dbName === dbObject.name);
-            console.log(`==> found: ${JSON.stringify(found)}`)
+            console.log(`==> found: ${found}`)
             client.close();
             resolve(!!found)
           });
