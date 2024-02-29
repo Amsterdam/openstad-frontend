@@ -53,7 +53,7 @@ exports.copyMongoDb = (oldDbName, newDbName) => {
 exports.dbExists = (dbName) => {
   console.log(`==> Frontend gaat checken of de volgende database bestaat: ${dbName}`)
   return new Promise((resolve, reject) => {
-    console.log(`==> MongoClient.connect gaat aangeroepen worden. MongoClient: ${JSON.stringify(MongoClient)}`)
+    console.log(`==> MongoClient.connect gaat aangeroepen worden. MongoClient: ${MongoClient}`)
     try {
       const mongoClient = new MongoClient(getConnectionString(), {
         serverApi: {
