@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 
 function getConnectionString (database) {
   console.log(`==> getConnectionString wordt aangeroepen`)
@@ -55,7 +55,15 @@ exports.dbExists = (dbName) => {
   return new Promise((resolve, reject) => {
     console.log(`==> MongoClient.connect gaat aangeroepen worden. MongoClient: ${JSON.stringify(MongoClient)}`)
     try {
-      MongoClient.connect(getConnectionString(), (err, client) => {
+      const mongoClient = new MongoClient(getConnectionString(), {
+        serverApi: {
+          version: ServerApiVersion.v1,
+          strict: true,
+          deprecationErrors: true
+        }
+      })
+      console.log(`==> mongoClient: ${JSON.stringify(mongoClient)}`)
+      mongoClient.connect((err, client) => {
         console.log(`==> Callback van de MongoClient.connect functie. client is: ${client}`)
         if (err) {
           console.log(`==> Er is een error: ${err}`)
