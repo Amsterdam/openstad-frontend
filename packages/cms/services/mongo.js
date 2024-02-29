@@ -1,6 +1,7 @@
 const { MongoClient } = require('mongodb');
 
 function getConnectionString (database) {
+  console.log(`==> getConnectionString wordt aangeroepen`)
   // Allow the connection string builder to be overridden by an environment variable
   // We replace '{database}' in this connection string with the database we are looking for
   if (process.env.MONGO_DB_CONNECTION_STRING) {
@@ -14,6 +15,8 @@ function getConnectionString (database) {
   const authSource = process.env.MONGO_DB_AUTHSOURCE || '';
   
   const useAuth = user && password;
+
+  console.log(`==> connectionString: mongodb://${useAuth ? `${user}:<PASSWORD>@` : ''}${host}:${port}/${database ? database : ''}${authSource ? `?authSource=${authSource}` : ''}`)
   
   return `mongodb://${useAuth ? `${user}:${password}@` : ''}${host}:${port}/${database ? database : ''}${authSource ? `?authSource=${authSource}` : ''}`;
 }
