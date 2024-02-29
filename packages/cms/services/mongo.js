@@ -51,27 +51,31 @@ exports.dbExists = (dbName) => {
   console.log(`==> Frontend gaat checken of de volgende database bestaat: ${dbName}`)
   return new Promise((resolve, reject) => {
     console.log(`==> MongoClient.connect gaat aangeroepen worden. MongoClient: ${JSON.stringify(MongoClient)}`)
-    MongoClient.connect(getConnectionString(), (err, client) => {
-      console.log(`==> Callback van de MongoClient.connect functie. client is: ${client}`)
-      if (err) {
-        console.log(`==> Er is een error: ${err}`)
-        reject(err);
-      } else {
-        console.log(`==> Er is geen error. client.db().admin() gaat aangeroepen worden. client: ${client}`)
-        var adminDb = client.db().admin();
-        console.log(`==> adminDb: ${adminDb}`)
-        // List all the available databases
-        adminDb.listDatabases(function(err, dbs) {
-          console.log('---> err', err);
-          console.log('---> dbs.dbName', dbName);
-          console.log('---> dbs.databases', dbs.databases);
-          
-          const found = dbs.databases.find(dbObject => dbName === dbObject.name);
-          console.log(`==> found: ${JSON.stringify(found)}`)
-          client.close();
-          resolve(!!found)
-        });
-      }
-    });
+    try {
+      MongoClient.connect(getConnectionString(), (err, client) => {
+        console.log(`==> Callback van de MongoClient.connect functie. client is: ${client}`)
+        if (err) {
+          console.log(`==> Er is een error: ${err}`)
+          reject(err);
+        } else {
+          console.log(`==> Er is geen error. client.db().admin() gaat aangeroepen worden. client: ${client}`)
+          var adminDb = client.db().admin();
+          console.log(`==> adminDb: ${adminDb}`)
+          // List all the available databases
+          adminDb.listDatabases(function(err, dbs) {
+            console.log('---> err', err);
+            console.log('---> dbs.dbName', dbName);
+            console.log('---> dbs.databases', dbs.databases);
+            
+            const found = dbs.databases.find(dbObject => dbName === dbObject.name);
+            console.log(`==> found: ${JSON.stringify(found)}`)
+            client.close();
+            resolve(!!found)
+          });
+        }
+      });
+    } catch (err) {
+      console.log(`==> Error afgevangen: ${err}`)
+    }
   });
 }
