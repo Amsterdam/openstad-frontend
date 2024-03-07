@@ -52,7 +52,7 @@ exports.copyMongoDb = (oldDbName, newDbName) => {
 
 exports.dbExists = (dbName) => {
   console.log(`==> Frontend gaat checken of de volgende database bestaat: ${dbName}`)
-  return new Promise(async (resolve, reject) => {
+  return async (resolve, reject) => {
     console.log(`==> MongoClient.connect gaat aangeroepen worden. MongoClient: ${MongoClient}`)
     try {
       const mongoClient = new MongoClient(getConnectionString(), {
@@ -88,5 +88,5 @@ exports.dbExists = (dbName) => {
     } catch (err) {
       console.log(`==> Error afgevangen: ${err}`)
     }
-  });
+  };
 }
