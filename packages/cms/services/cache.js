@@ -1,5 +1,5 @@
 const fileCache = require('node-file-cache').create({
-  file: "/tmp"
+  file: "/tmp/node-file-cache"
 });
 const memCache  = require('memory-cache');
 const useFileCache = false;
