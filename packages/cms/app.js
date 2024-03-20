@@ -158,7 +158,8 @@ function serveSite(req, res, siteConfig, forceRestart) {
           })
     }).then((exists) => {
         // if default DB is set
-        console.log(`==> db exists?: ${exists}`)
+        console.log(`==> db exists?:`)
+        console.log(exists)
         if (exists || dbName === process.env.DEFAULT_DB) {
 
             if ((!aposServer[domain] || forceRestart) && !aposStartingUp[domain]) {
@@ -191,14 +192,16 @@ function serveSite(req, res, siteConfig, forceRestart) {
                 }
 
                 const safeStartServer = () => {
-                    console.log(`==> aposStarting up check voor domain ${domain}: ${JSON.stringify(aposStartingUp[domain])}`)
+                    console.log(`==> aposStarting up check voor domain ${domain}:`)
+                    console.log(aposStartingUp[domain])
                     if (aposStartingUp[domain]) {
                         // old school timeout loop to make sure we dont start multiple servers of the same site
                         setTimeout(() => {
                             safeStartServer();
                         }, 100);
                     } else {
-                        console.log(`==> Going to start server for aposServer[domain]: ${JSON.stringify(aposServer[domain])}`)
+                        console.log(`==> Going to start server for aposServer[domain]:`)
+                        console.log(aposServer[domain])
                         startServer(aposServer[domain], req, res)
                     }
                 }
