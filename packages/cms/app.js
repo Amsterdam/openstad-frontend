@@ -200,8 +200,8 @@ function serveSite(req, res, siteConfig, forceRestart) {
                             safeStartServer();
                         }, 100);
                     } else {
-                        console.log(`==> Going to start server for aposServer[domain]:`)
-                        console.log(aposServer[domain])
+                        console.log(`==> Going to start server for aposServer[domain]. domain: ${domain} . aposServer:`)
+                        console.log(aposServer)
                         startServer(aposServer[domain], req, res)
                     }
                 }
@@ -342,7 +342,7 @@ module.exports.getMultiSiteApp = (options) => {
 
     app.use('/:sitePrefix', function (req, res, next) {
         if (req.site) {
-            //console.log('servig')
+            console.log('==> Serving site from path /:sitePrefix')
             return serveSite(req, res, req.site, req.forceRestart);
         }
 
@@ -365,6 +365,7 @@ module.exports.getMultiSiteApp = (options) => {
         if (site) {
             req.site = site;
             req.allSites = sitesById;
+            console.log('==> Serving site from general app.use')
             serveSite(req, res, site, req.forceRestart);
         } else {
             res.status(404).json({error: 'Site not found'});
