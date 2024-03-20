@@ -158,6 +158,7 @@ function serveSite(req, res, siteConfig, forceRestart) {
           })
     }).then((exists) => {
         // if default DB is set
+        console.log(`==> db exists?: ${exists}`)
         if (exists || dbName === process.env.DEFAULT_DB) {
 
             if ((!aposServer[domain] || forceRestart) && !aposStartingUp[domain]) {
@@ -196,6 +197,7 @@ function serveSite(req, res, siteConfig, forceRestart) {
                             safeStartServer();
                         }, 100);
                     } else {
+                        console.log(`==> Going to start server for aposServer[domain]: ${aposServer[domain]}`)
                         startServer(aposServer[domain], req, res)
                     }
                 }
@@ -215,6 +217,8 @@ function serveSite(req, res, siteConfig, forceRestart) {
 
 async function run(id, siteData, options, callback) {
     const site = {_id: id}
+
+    console.log(`==> async runner function, id should be dbname: ${id}`)
 
     let openstadComponentsCdn = await cdns.contructComponentsCdn();
     let openstadReactAdminCdn = await cdns.contructReactAdminCdn();
