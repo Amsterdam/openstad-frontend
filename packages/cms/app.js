@@ -191,13 +191,14 @@ function serveSite(req, res, siteConfig, forceRestart) {
                 }
 
                 const safeStartServer = () => {
+                    console.log(`==> aposStarting up check voor domain ${domain}: ${JSON.stringify(aposStartingUp[domain])}`)
                     if (aposStartingUp[domain]) {
                         // old school timeout loop to make sure we dont start multiple servers of the same site
                         setTimeout(() => {
                             safeStartServer();
                         }, 100);
                     } else {
-                        console.log(`==> Going to start server for aposServer[domain]: ${aposServer[domain]}`)
+                        console.log(`==> Going to start server for aposServer[domain]: ${JSON.stringify(aposServer[domain])}`)
                         startServer(aposServer[domain], req, res)
                     }
                 }
