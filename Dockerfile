@@ -66,7 +66,6 @@ RUN mkdir -p /home/app/public/js
 RUN mkdir -p /home/app/public/img
 RUN mkdir -p /home/app/public/apos-minified
 RUN mkdir -p /home/app/data
-RUN mkdir -p /home/app/tmp
 
 # Mount persistent storage
 #VOLUME /home/app/data
@@ -79,11 +78,7 @@ RUN mkdir -p /home/app/public/uploads/assets
 # otherwise takes very long
 RUN chown -R node:node /home/app/public
 RUN chown -R node:node /home/app/data
-RUN chown -R node:node /home/app/tmp
 USER node
-
-# DEBUGGING FOR AMSTERDAM AZURE
-RUN node apostrophe.js apostrophe:generation  --create-bundle assets
 
 # Exposed ports for application
 EXPOSE 4444/tcp
