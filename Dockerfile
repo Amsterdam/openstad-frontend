@@ -80,6 +80,9 @@ RUN chown -R node:node /home/app/public
 RUN chown -R node:node /home/app/data
 USER node
 
+# DEBUGGING FOR AMSTERDAM AZURE
+RUN node apostrophe.js apostrophe:generation  --create-bundle assets
+
 # Exposed ports for application
 EXPOSE 4444/tcp
 EXPOSE 4444/udp
