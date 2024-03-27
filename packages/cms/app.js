@@ -238,6 +238,8 @@ async function run(id, siteData, options, callback) {
         assetsIdentifier = firstSite.assets.generation;
     }
 
+    console.log(`==> assetsIdentifier: ${assetsIdentifier}`)
+
     const siteConfig = defaultSiteConfig.get(site._id, config, assetsIdentifier);
 
     siteConfig.afterListen = function () {
