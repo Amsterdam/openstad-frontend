@@ -10,12 +10,14 @@ directory="assets/public/apos-minified"
 css_file=$(find "$directory" -type f -name "anon-*.css" -print -quit)
 js_file=$(find "$directory" -type f -name "anon-*.js" -print -quit)
 
-# Check if files are found
-if [[ -n $css_file && -n $js_file ]]; then
+# Check if environment variables are set and files are found
+if [[ -n $STATIC_ASSETS_FILENAME_CONSTANT && -n $css_file && -n $js_file ]]; then
     # Rename the files with the values from environment variables
-    mv "$css_file" "$directory/anon-handmatig-overschreven.css"
-    mv "$js_file" "$directory/anon-handmatig-overschreven.js"
+    mv "$css_file" "$directory/anon-$STATIC_ASSETS_FILENAME_CONSTANT.css"
+    mv "$js_file" "$directory/anon-$STATIC_ASSETS_FILENAME_CONSTANT.js"
     echo "Files renamed successfully."
+elif [[ -z $CSS_FILENAME || -z $JS_FILENAME ]]; then
+    echo "Not renaming files: Environment variable STATIC_ASSETS_FILENAME_CONSTANT is not set."
 else
-    echo "Error: Files not found."
+    echo "Error: .css and .js files not found for renaming."
 fi
