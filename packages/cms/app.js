@@ -240,6 +240,9 @@ async function run(id, siteData, options, callback) {
 
     console.log(`==> assetsIdentifier: ${assetsIdentifier}`)
 
+    // FOR DEBUGGING PURPOSES OVERWIRTE ASSETS-IDENTIFIER
+    assetsIdentifier = "handmatig-overschreven"
+
     const siteConfig = defaultSiteConfig.get(site._id, config, assetsIdentifier);
 
     siteConfig.afterListen = function () {
