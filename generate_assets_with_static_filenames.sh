@@ -10,8 +10,8 @@ generation_id_file="assets/data/generation"
 # Get the filenames starting with "anon-" and "user-" and ending with ".css" and ".js"
 anon_css_file=$(find "$assets_directory" -type f -name "anon-*.css" -print -quit)
 anon_js_file=$(find "$assets_directory" -type f -name "anon-*.js" -print -quit)
-user_css_file=$(find "$assets_directory" -type f -name "anon-*.css" -print -quit)
-user_js_file=$(find "$assets_directory" -type f -name "anon-*.js" -print -quit)
+user_css_file=$(find "$assets_directory" -type f -name "user-*.css" -print -quit)
+user_js_file=$(find "$assets_directory" -type f -name "user-*.js" -print -quit)
 
 # Check if environment variables are set and files are found
 if [[ -n $STATIC_ASSETS_FILENAME_CONSTANT && -n $anon_css_file && -n $anon_js_file && -n $user_css_file && -n $user_js_file ]]; then
