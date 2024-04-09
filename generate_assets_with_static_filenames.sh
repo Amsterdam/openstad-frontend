@@ -22,7 +22,7 @@ if [[ -n $STATIC_ASSETS_FILENAME_CONSTANT && -n $anon_css_file && -n $anon_js_fi
     mv "$user_js_file" "$assets_directory/user-$STATIC_ASSETS_FILENAME_CONSTANT.js"
     echo "$STATIC_ASSETS_FILENAME_CONSTANT" > "$generation_id_file"
     echo "Files renamed successfully."
-elif [[ -z $anon_css_file || -z $anon_js_file || -z $user_css_file || -z $user_js_file]]; then
+elif [[ -z $anon_css_file || -z $anon_js_file || -z $user_css_file || -z $user_js_file ]]; then
     echo "Not renaming files: Environment variable STATIC_ASSETS_FILENAME_CONSTANT is not set."
 else
     echo "Error: .css and .js files not found for renaming."
