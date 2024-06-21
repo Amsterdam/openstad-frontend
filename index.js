@@ -9,6 +9,7 @@ if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
   appInsights.setup()
     .setAutoCollectRequests(true)
     .setAutoCollectPerformance(true)
+    .setAutoCollectConsole(true, true)
     .setAutoCollectExceptions(true)
     .setAutoCollectDependencies(false)
     .setAutoDependencyCorrelation(true)
