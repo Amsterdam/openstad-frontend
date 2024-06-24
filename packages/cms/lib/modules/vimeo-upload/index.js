@@ -61,6 +61,8 @@ module.exports = {
            res.status(500).json({
              error: 'Vimeoconfig not existing'
            });
+           
+           return;
          }
 
          const _clientSecret = vimeoConfig.secret;

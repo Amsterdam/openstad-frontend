@@ -85,9 +85,7 @@ function fetchAllSites(req, res, startSites) {
     console.log('Fetch all sites')
 
     if (!process.env.SITE_API_KEY) {
-        console.log('Site api key is not set!');
-        if (res) res.status(500).json({error: 'Site api key is not set!'});
-        return;
+        throw new Error('Site api key is not set!')
     }
 
     return fetch(`${apiUrl}/api/site`, {
@@ -111,10 +109,7 @@ function fetchAllSites(req, res, startSites) {
         sitesById = newSitesById;
 
         cleanUpSites();
-    }).catch((e) => {
-        console.error('An error occurred fetching the site config:', e);
-        if (res) res.status(500).json({error: 'An error occured fetching the sites data: ' + e});
-    });
+    })
 }
 
 // run through all sites see if anyone is not active anymore and needs to be shut down
@@ -268,12 +263,19 @@ module.exports.getMultiSiteApp = (options) => {
     app.use(async function (req, res, next) {
         if (Object.keys(sites).length === 0) {
             console.log('Fetching config for all sites');
-            await fetchAllSites(req, res);
+            try {
+                await fetchAllSites(req, res);
+            } catch (e) {
+                console.error('An error occurred fetching the site config:', e);
+                if (res) return res.status(500).json({error: 'An error occured fetching the sites data: ' + e});
+            }
         }
 
         if (Object.keys(sites).length === 0) {
             console.log('No config for sites found');
             res.status(500).json({error: 'No sites found'});
+
+            return;
         }
 
         // add custom openstad configuration to ApostrhopheCMS
@@ -292,7 +294,12 @@ module.exports.getMultiSiteApp = (options) => {
     const resetConfigMw = async (req, res, next) => {
         let host = req.headers['x-forwarded-host'] || req.get('host');
         host = host.replace(['http://', 'https://'], ['']);
-        await fetchAllSites(req, res);
+        try {
+            await fetchAllSites(req, res);
+        } catch (e) {
+            console.error('An error occurred fetching the site config:', e);
+            if (res) return res.status(500).json({error: 'An error occured fetching the sites data: ' + e});
+        }
         req.forceRestart = true;
         next();
     }
