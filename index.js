@@ -12,8 +12,9 @@ if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
     .setAutoCollectExceptions(true)
     .setAutoCollectDependencies(true)
     .setAutoDependencyCorrelation(true)
-    .setUseDiskRetryCaching(true)
-    .start();
+    .setUseDiskRetryCaching(true);
+  appInsights.defaultClient.config.samplingPercentage = process.env.APPLICATIONINSIGHTS_SAMPLING_PERCENTAGE ? process.env.APPLICATIONINSIGHTS_SAMPLING_PERCENTAGE : 100;
+  appInsights.start();
 }
 
 var apos = openstadCms.site({
