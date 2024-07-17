@@ -13,7 +13,7 @@ if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
     .setAutoCollectDependencies(true)
     .setAutoDependencyCorrelation(true)
     .setUseDiskRetryCaching(true);
-  appInsights.defaultClient.config.samplingPercentage = process.env.APPLICATIONINSIGHTS_SAMPLING_PERCENTAGE ? process.env.APPLICATIONINSIGHTS_SAMPLING_PERCENTAGE : 100;
+  appInsights.defaultClient.config.samplingPercentage = process.env.APPLICATIONINSIGHTS_SAMPLING_PERCENTAGE ? parseInt(process.env.APPLICATIONINSIGHTS_SAMPLING_PERCENTAGE) : 100;
   appInsights.start();
 }
 
