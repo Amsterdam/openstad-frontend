@@ -59,9 +59,9 @@ RUN npm install -g nodemon
 RUN apk del openssl g++ make python3 && rm -rf /var/cache/apk/*
 
 RUN mkdir -p /home/app/public
-RUN mkdir -p /home/app/public
 RUN mkdir -p /home/app/public/modules
 RUN mkdir -p /home/app/public/css
+RUN mkdir -p /home/app/public/css/defaults
 RUN mkdir -p /home/app/public/js
 RUN mkdir -p /home/app/public/img
 RUN mkdir -p /home/app/public/apos-minified
