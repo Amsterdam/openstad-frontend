@@ -79,6 +79,8 @@ module.exports = (self, options) => {
       );
 
       try {
+        console.log(`----> [DEBUG] Going to call the DeepL translater service for the following ${untranslatedElements.length} elements:`)
+        untranslatedElements.map(element => console.log(element))
         let translations = await translator.translateText(
           untranslatedElements,
           sourceLanguageCode,
