@@ -39,6 +39,7 @@ async function getSupportedLanguages(deeplAuthKey) {
           const languageTranslatedCollection = [];
 
           for (const language of supportedLanguages) {
+              console.log("-----> [DEBUG] Going to translate the following string using DeepL:", language.name);
               languageTranslatedCollection.push(
                   translator.translateText(
                       language.name,
