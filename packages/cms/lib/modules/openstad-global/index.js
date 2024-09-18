@@ -52,6 +52,7 @@ async function getSupportedLanguages(deeplAuthKey) {
           await Promise.all(languageTranslatedCollection).then(languages => {
               supportedLanguages = languages.map((language, index) => {
                   language['code'] = supportedLanguages[index].code;
+                  console.log(`Amount of billed characters for the translation of "${language['text']}" is ${language['billedCharacters']}`)
                   return language;
               });
 
