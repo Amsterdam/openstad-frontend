@@ -83,9 +83,9 @@ module.exports = {
 
     options.arrangeFields = arrangeFields.concat(options.arrangeFields || []);
 
-    self.apos.app.use((req, res, next) => {
+    self.apos.app.use(async (req, res, next) => {
       req.data.global = req.data.global ? req.data.global : {};
-      req.data.global.languages = getSupportedLanguages();
+      req.data.global.languages = await getSupportedLanguages();
       return next();
     });
 
