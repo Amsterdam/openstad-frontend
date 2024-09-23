@@ -20,54 +20,42 @@ function unauthorized(req, res) {
     return res.status(401).send('Authentication required.');
 }
 
-async function getSupportedLanguages(deeplAuthKey) {
-  let supportedLanguages = [];
-  const cacheKeyForLanguages = 'translationLanguages'
+async function getSupportedLanguages() {
+  const supportedLanguages = [
+    { name: 'Arabic', code: 'ar', supportsFormality: false, translatedName: 'اللغة العربية' },
+    { name: 'Bulgarian', code: 'bg', supportsFormality: false, translatedName: 'Български' },
+    { name: 'Czech', code: 'cs', supportsFormality: false, translatedName: 'Česky' },
+    { name: 'Danish', code: 'da', supportsFormality: false, translatedName: 'Dansk' },
+    { name: 'German', code: 'de', supportsFormality: true, translatedName: 'Deutsch' },
+    { name: 'Greek', code: 'el', supportsFormality: false, translatedName: 'Ελληνική' },
+    { name: 'English (British)', code: 'en-GB', supportsFormality: false, translatedName: 'English (British)' },
+    { name: 'English (American)', code: 'en-US', supportsFormality: false, translatedName: 'English (American)' },
+    { name: 'Spanish', code: 'es', supportsFormality: true, translatedName: 'Español' },
+    { name: 'Estonian', code: 'et', supportsFormality: false, translatedName: 'Eesti' },
+    { name: 'Finnish', code: 'fi', supportsFormality: false, translatedName: 'Suomalainen' },
+    { name: 'French', code: 'fr', supportsFormality: true, translatedName: 'Français' },
+    { name: 'Hungarian', code: 'hu', supportsFormality: false, translatedName: 'Magyar' },
+    { name: 'Indonesian', code: 'id', supportsFormality: false, translatedName: 'Bahasa Indonesia' },
+    { name: 'Italian', code: 'it', supportsFormality: true, translatedName: 'Italiano' },
+    { name: 'Japanese', code: 'ja', supportsFormality: true, translatedName: '日本語' },
+    { name: 'Korean', code: 'ko', supportsFormality: false, translatedName: '한국어' },
+    { name: 'Lithuanian', code: 'lt', supportsFormality: false, translatedName: 'Lietuviešu' },
+    { name: 'Latvian', code: 'lv', supportsFormality: false, translatedName: 'Latvijos' },
+    { name: 'Norwegian', code: 'nb', supportsFormality: false, translatedName: 'Norsk' },
+    { name: 'Dutch', code: 'nl', supportsFormality: true, translatedName: 'Nederlands' },
+    { name: 'Polish', code: 'pl', supportsFormality: true, translatedName: 'Polski' },
+    { name: 'Portuguese (Brazilian)', code: 'pt-BR', supportsFormality: true, translatedName: 'Português (brasileiro)' },
+    { name: 'Portuguese (European)', code: 'pt-PT', supportsFormality: true, translatedName: 'Português (Europeu)' },
+    { name: 'Romanian', code: 'ro', supportsFormality: false, translatedName: 'română' },
+    { name: 'Russian', code: 'ru', supportsFormality: true, translatedName: 'Русский' },
+    { name: 'Slovak', code: 'sk', supportsFormality: false, translatedName: 'Slovenská' },
+    { name: 'Slovenian', code: 'sl', supportsFormality: false, translatedName: 'Slovenski' },
+    { name: 'Swedish', code: 'sv', supportsFormality: false, translatedName: 'Svenska' },
+    { name: 'Turkish', code: 'tr', supportsFormality: false, translatedName: 'Türkçe' },
+    { name: 'Ukrainian', code: 'uk', supportsFormality: false, translatedName: 'Українська' },
+    { name: 'Chinese (simplified)', code: 'zh', supportsFormality: false, translatedName: '中文（简体）' }
+  ];
 
-  if (cache.get(cacheKeyForLanguages)) {
-      console.log("Received languages from cache");
-      supportedLanguages = cache.get(cacheKeyForLanguages);
-  }
-  else if (deeplAuthKey) {
-      try {
-          const translator = new deepl.Translator(deeplAuthKey, translatorConfig);
-          await translator.getTargetLanguages().then(response => {
-              supportedLanguages = response;
-          });
-
-          // convert items to their own language
-          const languageTranslatedCollection = [];
-
-          for (const language of supportedLanguages) {
-              languageTranslatedCollection.push(
-                  translator.translateText(
-                      language.name,
-                      'EN',
-                      language.code
-                  )
-              );
-          }
-
-          await Promise.all(languageTranslatedCollection).then(languages => {
-              supportedLanguages = languages.map((language, index) => {
-                  language['code'] = supportedLanguages[index].code;
-                  return language;
-              });
-
-              cache.set(`${cacheKeyForLanguages}`, supportedLanguages, {
-                  life: cacheLanguagesLifespan
-              });
-          });
-      } catch(error) {
-          supportedLanguages = supportedLanguages.map((language, index) => {
-              language['text'] = supportedLanguages[index].name;
-              return language;
-          })
-          console.error({translationError: error});
-      }
-  } else {
-      console.error({translationError: "Could not fetch languages for the translation widget: Key not set"});
-  }
   return supportedLanguages;
 }
 
@@ -96,9 +84,8 @@ module.exports = {
     options.arrangeFields = arrangeFields.concat(options.arrangeFields || []);
 
     self.apos.app.use(async (req, res, next) => {
-      let deeplAuthKey = options.deeplKey;
       req.data.global = req.data.global ? req.data.global : {};
-      req.data.global.languages = await getSupportedLanguages(deeplAuthKey);
+      req.data.global.languages = await getSupportedLanguages();
       return next();
     });
 
