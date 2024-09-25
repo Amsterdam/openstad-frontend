@@ -33,7 +33,7 @@ module.exports = [
     {
         name: 'footer',
         label: 'Footer',
-        fields: ['footer']
+        fields: ['footer', 'translateInMenu']
     },
     {
         name: 'map',
@@ -43,7 +43,7 @@ module.exports = [
     {
         name: 'mainMenu',
         label: 'Hoofdmenu',
-        fields: ['arrangeMainMenu', 'displayLoginTopLink', 'mainMenuItems', 'ctaButtonText', 'ctaButtonUrl', 'topLinks', 'displayMyAcount', "myAccountButtonText", 'translateInMenu']
+        fields: ['arrangeMainMenu', 'displayLoginTopLink', 'mainMenuItems', 'ctaButtonText', 'ctaButtonUrl', 'topLinks', 'displayMyAcount', "myAccountButtonText"]
     },
     {
         name: 'userRights',
