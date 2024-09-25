@@ -424,7 +424,7 @@
       {% if data.global.translateInMenu %}
       <div class="row">
         <div class="col-sm-12 col-xs-12">
-          <h2>Translate</h2>
+          <h2 id="translate-header">Translate</h2>
           <select translate="no" id="translation-widget-select-global" class="translation-widget-select compact" selected="nl">
             {% for language in data.global.languages %}
               {% if language.code === 'nl' %}
