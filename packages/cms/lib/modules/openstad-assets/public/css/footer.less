@@ -25,7 +25,6 @@ footer {
 	    background-position: top 2px left;
 	    background-repeat: no-repeat;
 	    background-size: auto 1em;
-	    padding-left: 15px;
 	    font-size: 16px;
 	    font-weight: 500;
 	    margin: 5px 0px;
@@ -50,21 +49,40 @@ footer {
 
 }
 
-#translation-widget-select-global {
-	background-color: inherit;
-	padding-left: 32px;
+// #translation-widget-select-global {
+// 	background-color: inherit;
+// 	padding-left: 32px;
 
-	option {
-		color: black;
-	}
+// 	option {
+// 		color: black;
+// 	}
 
-	&::before {
-		content: url(/modules/openstad-assets/img/language_white.svg);
-		position: absolute;
-		width: 24px;
-		height: 24px;
-		top: 12px;
-		left: 12px;
-		display: inline-block;
+// 	&::before {
+// 		content: url(/modules/openstad-assets/img/language_white.svg);
+// 		position: absolute;
+// 		width: 24px;
+// 		height: 24px;
+// 		top: 12px;
+// 		left: 12px;
+// 		display: inline-block;
+// 	}
+// }
+
+#translation-widget-select-global-container {
+	background-image: url(/modules/openstad-assets/img/language_white.svg);
+	background-position: top 2px left;
+	background-repeat: no-repeat;
+	background-size: auto 1em;
+	font-size: 16px;
+	font-weight: 500;
+	margin: 5px 0px;
+	padding-left: 20px;
+
+	select {
+		background-color: inherit;
+
+		option {
+			color: black;
+		}
 	}
 }
