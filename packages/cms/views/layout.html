@@ -209,22 +209,6 @@
               </ul>
               {% endif %}
             </div>
-
-
-            {% if data.global.translateInMenu %}
-              <div class="{{ 'col-xs-2' if data.global.hideSiteTitle else 'col-sm-1 col-md-1' }}  hidden-xs">
-                <ul class="top-links">
-                  <select translate="no" id="translation-widget-select-global" class="translation-widget-select compact" selected="nl">
-                    {% for language in data.global.languages %}
-                    {% if language.code === 'nl' %}
-                      <option translate="no" value="{{language.code}}" selected='selected' class="translation-widget-select-option">{{language.code}}</option>      
-                    {% else %}
-                      <option translate="no" value="{{language.code}}" class="translation-widget-select-option">{{language.code}}  </option>
-                    {% endif %}
-                  {% endfor %}
-                  </select>
-              </div>
-            {% endif %}
           </div>
         </div>
         {% if data.global.translations and data.global.translations.length > 0 %}
@@ -437,6 +421,24 @@
         </div>
         {% endfor %}
       </div>
+      {% if data.global.translateInMenu %}
+      <div class="row">
+        <div class="col-sm-12 col-xs-12">
+          <h2>Translate</h2>
+          <div id="translation-widget-select-global-container">
+            <select translate="no" id="translation-widget-select-global" class="translation-widget-select compact" selected="nl">
+              {% for language in data.global.languages %}
+                {% if language.code === 'nl' %}
+                  <option translate="no" value="{{language.code}}" selected='selected' class="translation-widget-select-option">{{language.translatedName}}</option>      
+                {% else %}
+                  <option translate="no" value="{{language.code}}" class="translation-widget-select-option">{{language.translatedName}}  </option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+      {% endif %}
     </div>
   </footer>
   {% endif %}
