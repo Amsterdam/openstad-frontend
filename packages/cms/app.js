@@ -282,7 +282,7 @@ module.exports.getMultiSiteApp = (options) => {
         //format domain to our specification
         let domain = req.headers['x-forwarded-host'] || req.get('host');
         domain = domain.replace(['http://', 'https://'], ['']);
-        domain = domain.replace(['www'], ['']);
+        domain = domain.replace(/^www\./, '');
 
         req.openstadDomain = domain;
 
