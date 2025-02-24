@@ -358,7 +358,8 @@ module.exports.getMultiSiteApp = (options) => {
         // if site exists serve it, otherwise give a 404
         if (site) {
             req.site = site;
-            req.allSites = sitesById;
+            // req.allSites = sitesById;
+            req.allSites = { "message": "Hardcoded disabled on purpose, to prevent very large request bodies in the CMS"}
             serveSite(req, res, site, req.forceRestart);
         } else {
             res.status(404).json({error: 'Site not found'});
